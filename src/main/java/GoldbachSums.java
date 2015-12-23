@@ -24,10 +24,13 @@ public class GoldbachSums implements Iterable<Integer> {
     private static boolean[] oddSieveOfEratosthenes(int max) {
         boolean[] ineligible = new boolean[max];
         ineligible[1] = true;
+        // load ineligible from file
+        // determine initial i
         for (int i = 3; i * i < max; i += 2) {
             if (! ineligible[i]) {
                 for (int j = i * i; j < max; j += i) {
                     ineligible[j] = true;
+                    // write to end of file
                 }
             }
         }
