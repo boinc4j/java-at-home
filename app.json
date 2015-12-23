@@ -1,0 +1,33 @@
+{
+    "name": "BONIC Template App",
+    "description": "A barebones BOINC app",
+    "repository": "https://github.com/jkutner/java-at-home",
+    "addons": ["cleardb"],
+    "env": {
+        "HEROKU_APP_NAME": {
+            "description": "The name of the Heroku app (must be the same as above)."
+        },
+        "BOINC_APP_NAME": {
+            "description": "A short description of the BOINC app."
+        },
+        "BOINC_OPS_USERNAME": {
+            "description": "Username for the admin interface.",
+            "value": "admin"
+        },
+        "BOINC_OPS_PASSWORD": {
+            "description": "Password for the admin interface.",
+            "generator": "secret"
+        }
+    },
+    "buildpacks": [
+      {
+          "url": "heroku/java"
+      },
+      {
+          "url": "heroku/php"
+      },
+      {
+          "url": "https://github.com/jkutner/boinc-buildpack"
+      }
+    ]
+}
