@@ -7,6 +7,18 @@
   <version>1.0-SNAPSHOT</version>
   <artifactId>java-at-home</artifactId>
   <packaging>jar</packaging>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-codefinger-boinc</id>
+      <name>bintray-plugins</name>
+      <url>http://dl.bintray.com/codefinger/boinc</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <build>
     <plugins>
       <plugin>
@@ -22,9 +34,9 @@
       <plugin>
         <groupId>com.github.jkutner</groupId>
         <artifactId>boinc-maven-plugin</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.1</version>
         <configuration>
-          <uberjar>${build.directory}/${build.finalName}-jar-with-dependencies.jar</uberjar>
+          <uberjar>${project.build.directory}/${project.build.finalName}-jar-with-dependencies.jar</uberjar>
         </configuration>
         <executions>
           <execution>
