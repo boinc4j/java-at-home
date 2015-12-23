@@ -6,6 +6,7 @@
   <groupId>com.example</groupId>
   <version>1.0-SNAPSHOT</version>
   <artifactId>java-at-home</artifactId>
+  <packaging>jar</packaging>
   <build>
     <plugins>
       <plugin>
@@ -22,6 +23,41 @@
         <groupId>com.github.jkutner</groupId>
         <artifactId>boinc-maven-plugin</artifactId>
         <version>0.1.0-SNAPSHOT</version>
+        <configuration>
+          <uberjar>${build.directory}/${build.finalName}-jar-with-dependencies.jar</uberjar>
+        </configuration>
+        <executions>
+          <execution>
+            <id>boinc-install</id>
+            <phase>install</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+
+          <archive>
+            <manifest>
+              <mainClass>IsPrime</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
