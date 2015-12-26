@@ -2,4 +2,4 @@
 target
 *.iml
 /boinc
-composer.json.env
+composer.json
