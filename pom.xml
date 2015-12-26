@@ -64,7 +64,7 @@
       <plugin>
         <groupId>com.github.jkutner</groupId>
         <artifactId>boinc-maven-plugin</artifactId>
-        <version>0.1.9</version>
+        <version>0.1.10</version>
         <configuration>
           <uberjar>${project.build.directory}/${project.build.finalName}-jar-with-dependencies.jar</uberjar>
         </configuration>
