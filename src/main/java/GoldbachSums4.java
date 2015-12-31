@@ -63,11 +63,17 @@ public class GoldbachSums4 implements Iterable<Long> {
 
   public static void main(String[] args) throws IOException {
     try (Scanner scan = new Scanner(System.in)) {
-      System.out.print("Please input an integer to decompose as the sum of two primes: ");
-      Long input = scan.nextLong();
+//      System.out.print("Please input an integer to decompose as the sum of two primes: ");
+//      Long input = scan.nextLong();
+
+      BigInteger ten = BigInteger.valueOf(10l);
+      BigInteger four = BigInteger.valueOf(4l);
+      BigInteger base = ten.pow(18);
+      BigInteger biInput = base.multiply(four);
+      Long input = biInput.longValue();
 
       long startTime = System.nanoTime();
-      GoldbachSums4 goldbach = new GoldbachSums4(input, 11l, 18l);
+      GoldbachSums4 goldbach = new GoldbachSums4(input, input-100000, input);
       long duration = System.nanoTime() - startTime;
       System.err.printf("\nSieve of Eratosthenes took: %d ns or %f seconds.\n",
           duration, duration * 1e-9);
