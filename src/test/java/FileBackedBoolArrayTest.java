@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 
-public class BoolArrayTest {
+public class FileBackedBoolArrayTest {
 
   private File testFile = new File("target", "bool_array.dat");
 
@@ -17,7 +17,7 @@ public class BoolArrayTest {
 
   public void testInit() throws IOException {
     setUp();
-    BoolArray a = new BoolArray(testFile);
+    BoolArray a = new FileBackedBoolArray(testFile);
 
     assert !a.get(0l);
     assert !a.get(1l);
@@ -32,7 +32,7 @@ public class BoolArrayTest {
 
   public void testSimple() throws IOException {
     setUp();
-    BoolArray a = new BoolArray(testFile);
+    BoolArray a = new FileBackedBoolArray(testFile);
 
     a.set(2l, true);
     a.set(1000l, true);
@@ -47,7 +47,7 @@ public class BoolArrayTest {
 
   public void testSize() throws IOException {
     setUp();
-    BoolArray a = new BoolArray(testFile, 7l);
+    BoolArray a = new FileBackedBoolArray(testFile, 7l);
 
     a.set(2l, true);
 

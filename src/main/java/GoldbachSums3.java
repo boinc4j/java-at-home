@@ -30,7 +30,7 @@ public class GoldbachSums3 implements Iterable<Long> {
   }
 
   private static BoolArray oddSieveOfEratosthenes(Long max) throws IOException {
-    BoolArray ineligible = new BoolArray(primesFile, max);
+    BoolArray ineligible = new FileBackedBoolArray(primesFile, max);
     ineligible.set(1l, true);
     for (long i = 3; i * i < max; i += 2) {
       if (!ineligible.get(i)) {
