@@ -34,7 +34,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>IsPrime</mainClass>
+              <mainClass>MainTask</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
