@@ -1,4 +1,3 @@
-
 <output_template>
   <file_info>
     <name><OUTFILE_0/></name>
@@ -10,9 +9,10 @@
   <result>
     <file_ref>
         <file_name><OUTFILE_0/></file_name>
-        <open_name>out.txt</open_name>
+        <open_name>addends.txt</open_name>
         <copy_file/>
         <no_delete>1</no_delete>
     </file_ref>
+    <report_immediately/>
   </result>
 </output_template>

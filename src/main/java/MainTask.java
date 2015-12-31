@@ -3,7 +3,7 @@ import java.io.PrintWriter;
 public class MainTask {
 
   public static void main(String[] args) throws Exception {
-    try (PrintWriter out = new PrintWriter("primes.txt")) {
+    try (PrintWriter out = new PrintWriter("addends.txt")) {
       // figure out the number and range
       Long input = 0l;
       Long rangeStart = 0l;
