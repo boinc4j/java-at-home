@@ -4,3 +4,4 @@ target
 /boinc
 composer.json
 .env
+primes.dat

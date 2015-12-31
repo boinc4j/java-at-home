@@ -1,8 +1,7 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -11,13 +10,15 @@ import java.util.Scanner;
  * Borrowed from:
  * http://codereview.stackexchange.com/questions/110855/goldbachs-conjecture-using-sieve-of-eratosthenes
  */
-public class GoldbachSums2 implements Iterable<Integer> {
-  private final int sum;
-  private final byte[] ineligible;
+public class GoldbachSums3 implements Iterable<Long> {
 
-  private static final Path primesFilePath = new File("primes.dat").toPath();
+  private final Long sum;
 
-  public GoldbachSums2(int sum) throws IOException {
+  private final BoolArray ineligible;
+
+  private static final File primesFile = new File("primes.dat");
+
+  public GoldbachSums3(Long sum) throws IOException {
     if (sum <= 2) {
       throw new IllegalArgumentException("Number must be greater than 2.");
     }
@@ -28,44 +29,34 @@ public class GoldbachSums2 implements Iterable<Integer> {
     this.ineligible = oddSieveOfEratosthenes(sum);
   }
 
-  private static byte[] oddSieveOfEratosthenes(int max) throws IOException {
-    boolean[] ineligible = new boolean[max];
-    ineligible[1] = true;
-    for (int i = 3; i * i < max; i += 2) {
-      if (! ineligible[i]) {
-        for (int j = i * i; j < max; j += i) {
-          ineligible[j] = true;
+  private static BoolArray oddSieveOfEratosthenes(Long max) throws IOException {
+    BoolArray ineligible = new BoolArray(primesFile, max);
+    ineligible.set(1l, true);
+    for (long i = 3; i * i < max; i += 2) {
+      if (!ineligible.get(i)) {
+        for (long j = i * i; j < max; j += i) {
+          ineligible.set(j, true);
         }
       }
     }
-
-    byte[] primeBytes = new byte[max];
-    for (int i = 0; i < max; i++) {
-      primeBytes[i] = ineligible[i] ? Byte.MAX_VALUE : Byte.MIN_VALUE;
-    }
-
-    //System.out.println("writing file");
-    if (Files.exists(primesFilePath)) Files.delete(primesFilePath);
-    Files.write(primesFilePath, primeBytes, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-
-    System.out.println(primeBytes);
-
-    System.out.println(Files.readAllBytes(primesFilePath));
-
-    return Files.readAllBytes(primesFilePath); //Files.readAllBytes(primesFilePath);
+    return ineligible;
   }
 
   @Override
-  public Iterator<Integer> iterator() {
-    return new Iterator<Integer>() {
+  public Iterator<Long> iterator() {
+    return new Iterator<Long>() {
       // 4 is the only sum whose decomposition involves an even prime
-      private Integer n = (sum == 4) ? 2 : computeNext(sum - 1);
-      private final int halfSum = sum / 2;
+      private final Long halfSum = sum / 2;
+      private Long n = (sum == 4l) ? 2l : computeNext(sum - 1l);
 
-      private Integer computeNext(int n) {
-        for (int i = n; i >= halfSum; i -= 2) {
-          if (ineligible[i] == Byte.MIN_VALUE && ineligible[sum - i] == Byte.MIN_VALUE) {
-            return sum - i;
+      private Long computeNext(Long n) {
+        for (long i = n; i >= halfSum; i -= 2) {
+          try {
+            if (!ineligible.get(i) && !ineligible.get(sum - i)) {
+              return sum - i;
+            }
+          } catch (IOException e) {
+            throw new RuntimeException("Failed to read ineligible for i="+i, e);
           }
         }
         return null;
@@ -77,7 +68,7 @@ public class GoldbachSums2 implements Iterable<Integer> {
       }
 
       @Override
-      public Integer next() {
+      public Long next() {
         if (n == null) {
           throw new NoSuchElementException();
         } else try {
@@ -86,21 +77,26 @@ public class GoldbachSums2 implements Iterable<Integer> {
           n = computeNext(sum - n - 2);
         }
       }
+
+      // For compatibility with Java < 8
+      public void remove() {
+        throw new UnsupportedOperationException();
+      }
     };
   }
 
   public static void main(String[] args) throws IOException {
     try (Scanner scan = new Scanner(System.in)) {
       System.out.print("Please input an integer to decompose as the sum of two primes: ");
-      int input = scan.nextInt();
+      Long input = scan.nextLong();
 
       long startTime = System.nanoTime();
-      GoldbachSums2 goldbach = new GoldbachSums2(input);
+      GoldbachSums3 goldbach = new GoldbachSums3(input);
       long duration = System.nanoTime() - startTime;
       System.err.printf("\nSieve of Eratosthenes took: %d ns or %f seconds.\n",
           duration, duration * 1e-9);
       duration = System.nanoTime() - startTime;
-      for (int addend : goldbach) {
+      for (long addend : goldbach) {
         System.out.printf("%d + %d = %d\n", input - addend, addend, input);
       }
       ;
