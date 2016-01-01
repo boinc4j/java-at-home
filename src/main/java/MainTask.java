@@ -2,7 +2,7 @@ import java.io.*;
 
 public class MainTask {
 
-  private static final String DELIM = ",";
+  public static final String DELIM = ",";
 
   public static final File OUTPUT_FILE = new File("addends.txt");
 

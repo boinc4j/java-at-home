@@ -1,25 +1,48 @@
+import java.io.BufferedReader;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.FileReader;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Assimilator {
 
-  public void assimilate(String workUnitId, List<File> files) throws Exception {
-    // todo
-    try (Connection connection =
-             DriverManager.getConnection(System.getenv("JDBC_DATABASE_URL"))) {
-      Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+  private static final String UPDATE = "INSERT INTO goldbach (sum, addend) VALUES (?,?)";
+  private static final String CREATE = "CREATE TABLE IF NOT EXISTS goldbach (sum BIGINT, addend BIGINT)";
 
-      while (rs.next()) {
-        System.out.println("Read from DB: " + rs.getTimestamp("tick"));
+  public void assimilate(String workUnitId, List<File> files) throws Exception {
+    File resultsFile = files.get(0);
+    Map<Long,Long> results = new HashMap<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(resultsFile))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        String[] parts = line.split(MainTask.DELIM);
+        Long sum = Long.valueOf(parts[0]);
+        Long addend = Long.valueOf(parts[1]);
+        results.put(sum, addend);
       }
+    }
+
+    String updateTemplate = UPDATE;
+    for (int i=1; i < results.size(); i++) {
+      updateTemplate += ",(?,?)";
+    }
+
+    try (Connection connection =
+             DriverManager.getConnection(
+                 System.getProperty("jdbc.database.url", System.getenv("JDBC_DATABASE_URL")))) {
+      Statement stmt = connection.createStatement();
+      stmt.executeUpdate(CREATE);
+
+      PreparedStatement updateStmt = connection.prepareStatement(updateTemplate);
+      int i = 1;
+      for (Long sum : results.keySet()) {
+        updateStmt.setLong(i++, sum);
+        updateStmt.setLong(i++, results.get(sum));
+      }
+      updateStmt.execute();
     }
   }
 
