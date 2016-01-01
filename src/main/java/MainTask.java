@@ -1,3 +1,5 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.io.*;
 import java.math.BigInteger;
 import java.text.NumberFormat;
@@ -6,73 +8,63 @@ import java.util.List;
 
 public class MainTask {
 
-  private static final int ADDEND_BUFFER_SIZE = 100;
+  private static final String DELIM = ",";
 
   private final File outputFile = new File("addends.txt");
 
   public static void main(String[] args) throws Exception {
-    (new MainTask()).work();
-  }
-
-  private Long input;
-  private Long rangeStart;
-  private Long rangeEnd;
-
-  public MainTask() throws IOException {
     BigInteger ten = BigInteger.valueOf(10l);
     BigInteger four = BigInteger.valueOf(4l);
+    BigInteger five = BigInteger.valueOf(5l);
     BigInteger base = ten.pow(18);
-    BigInteger biInput = base.multiply(four);
 
-//      System.out.println(NumberFormat.getInstance().format(biInput));
+    BigInteger start = base.multiply(four);
+    BigInteger end = base.multiply(five);
 
-    this.input = biInput.longValue();
+    (new MainTask(start.longValue(), end.longValue())).work();
+  }
 
+  private Long rangeStart, rangeEnd;
+
+  public MainTask(Long start, Long end) throws IOException {
     if (outputFile.exists()) {
-      this.rangeStart = Long.valueOf(tail(outputFile));
+      String line = tail(outputFile);
+      String[] lineParts = line.split(DELIM);
+      this.rangeStart = Long.valueOf(lineParts[0]);
     } else {
-      this.rangeStart = input-40_000_000_000_000l;
+      this.rangeStart = start;
     }
-
-    this.rangeEnd = input;
+    this.rangeEnd = end;
   }
 
   public void work() throws IOException {
     long startTime = System.nanoTime();
+    for (Long i = rangeStart; i <= rangeEnd; i += 2) {
+      work(i);
+    }
+    mark(startTime);
+  }
+
+  public void work(Long input) throws IOException {
     try (FileWriter fw = new FileWriter(outputFile, true);
          BufferedWriter bw = new BufferedWriter(fw);
          PrintWriter out = new PrintWriter(bw)) {
 
-      GoldbachSums4 goldbach = new GoldbachSums4(input, rangeStart, rangeEnd);
+      GoldbachSums4 goldbach = new GoldbachSums4(input);
 
-      long i = 0;
-      List<Long> buffer = new ArrayList<>(ADDEND_BUFFER_SIZE);
-      for (Long addend : goldbach) {
-        buffer.add(addend);
-        if (buffer.size() == ADDEND_BUFFER_SIZE) {
-          out.print(join(buffer, "\n"));
-          out.flush();
-          buffer = new ArrayList<>(ADDEND_BUFFER_SIZE);
-        }
-
-        if (i > 200000) { mark(startTime, i); i = 0;} else {i++;}
+      Long addend = goldbach.iterator().next();
+      if (addend != null) {
+        out.printf("%d%s%d\n", input, DELIM, addend);
+      } else {
+        out.printf("%d%sNULL\n", input, DELIM);
       }
-    } finally {
-      mark(startTime, rangeEnd);
+      out.flush();
     }
   }
 
-  public void mark(Long startTime, Long i) {
+  public void mark(Long startTime) {
     long duration = System.nanoTime() - startTime;
-    System.err.printf("Time(%d): %f seconds.\n", i, duration * 1e-9);
-  }
-
-  public String join(List<Long> values, String delim) {
-    String s = "";
-    for (Long v : values) {
-      s += v + delim;
-    }
-    return s;
+    System.err.printf("Time(%d,%d): %f seconds.\n", rangeStart, rangeEnd, duration * 1e-9);
   }
 
   public String tail(File file) throws IOException {

@@ -12,6 +12,10 @@ public class GoldbachSums4 implements Iterable<Long> {
 
   private final Long rangeEnd;
 
+  public GoldbachSums4(Long sum) throws IOException {
+    this(sum, 0l, sum);
+  }
+
   public GoldbachSums4(Long sum, Long rangeStart, Long rangeEnd) throws IOException {
     if (sum <= 2) {
       throw new IllegalArgumentException("Number must be greater than 2.");
@@ -59,33 +63,5 @@ public class GoldbachSums4 implements Iterable<Long> {
         }
       }
     };
-  }
-
-  public static void main(String[] args) throws IOException {
-    try (Scanner scan = new Scanner(System.in)) {
-//      System.out.print("Please input an integer to decompose as the sum of two primes: ");
-//      Long input = scan.nextLong();
-
-      BigInteger ten = BigInteger.valueOf(10l);
-      BigInteger four = BigInteger.valueOf(4l);
-      BigInteger base = ten.pow(18);
-      BigInteger biInput = base.multiply(four);
-      Long input = biInput.longValue();
-
-      long startTime = System.nanoTime();
-      GoldbachSums4 goldbach = new GoldbachSums4(input, input-100000, input);
-      long duration = System.nanoTime() - startTime;
-      System.err.printf("\nSieve of Eratosthenes took: %d ns or %f seconds.\n",
-          duration, duration * 1e-9);
-      duration = System.nanoTime() - startTime;
-      for (long addend : goldbach) {
-        System.out.printf("%d + %d = %d\n", input - addend, addend, input);
-      }
-
-      System.err.printf("\nThis program took: %d ns or %f seconds.\n",
-          duration, duration * 1e-9);
-    } catch (IllegalArgumentException badInput) {
-      System.out.println(badInput.getMessage());
-    }
   }
 }
