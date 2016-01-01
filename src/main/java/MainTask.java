@@ -21,15 +21,22 @@ public class MainTask {
 
   private Long rangeStart, rangeEnd;
 
+  private File outputFile;
+
   public MainTask(Long start, Long end) throws IOException {
-    if (OUTPUT_FILE.exists()) {
-      String line = tail(OUTPUT_FILE);
+    this(start, end, OUTPUT_FILE);
+  }
+
+  public MainTask(Long start, Long end, File outputFile) throws IOException {
+    if (outputFile.exists()) {
+      String line = tail(outputFile);
       String[] lineParts = line.split(DELIM);
-      this.rangeStart = Long.valueOf(lineParts[0]);
+      this.rangeStart = Long.valueOf(lineParts[0]) + 2;
     } else {
       this.rangeStart = start;
     }
     this.rangeEnd = end;
+    this.outputFile = outputFile;
   }
 
   public void work() throws IOException {
@@ -41,7 +48,7 @@ public class MainTask {
   }
 
   public void work(Long input) throws IOException {
-    try (FileWriter fw = new FileWriter(OUTPUT_FILE, true);
+    try (FileWriter fw = new FileWriter(outputFile, true);
          BufferedWriter bw = new BufferedWriter(fw);
          PrintWriter out = new PrintWriter(bw)) {
 
@@ -55,6 +62,10 @@ public class MainTask {
       }
       out.flush();
     }
+  }
+
+  public Long getRangeStart() {
+    return this.rangeStart;
   }
 
   public void mark(Long startTime) {
