@@ -1,10 +1,5 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.io.*;
 import java.math.BigInteger;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainTask {
 
@@ -50,7 +45,7 @@ public class MainTask {
          BufferedWriter bw = new BufferedWriter(fw);
          PrintWriter out = new PrintWriter(bw)) {
 
-      GoldbachSums4 goldbach = new GoldbachSums4(input);
+      GoldbachSums goldbach = new GoldbachSums(input);
 
       Long addend = goldbach.iterator().next();
       if (addend != null) {

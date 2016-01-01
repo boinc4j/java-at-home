@@ -9,7 +9,7 @@ public class GoldbachSumsTest {
     primes.add(5l);
     primes.add(11l);
 
-    GoldbachSums4 goldbach = new GoldbachSums4(22l, 0l, 22l);
+    GoldbachSums goldbach = new GoldbachSums(22l, 0l, 22l);
 
     Set<Long> primesFound = new HashSet<>();
     for (Long addend : goldbach) {

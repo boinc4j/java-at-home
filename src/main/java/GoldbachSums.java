@@ -2,9 +2,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
-public class GoldbachSums4 implements Iterable<Long> {
+public class GoldbachSums implements Iterable<Long> {
 
   private final Long sum;
 
@@ -12,11 +11,11 @@ public class GoldbachSums4 implements Iterable<Long> {
 
   private final Long rangeEnd;
 
-  public GoldbachSums4(Long sum) throws IOException {
+  public GoldbachSums(Long sum) throws IOException {
     this(sum, 0l, sum);
   }
 
-  public GoldbachSums4(Long sum, Long rangeStart, Long rangeEnd) throws IOException {
+  public GoldbachSums(Long sum, Long rangeStart, Long rangeEnd) throws IOException {
     if (sum <= 2) {
       throw new IllegalArgumentException("Number must be greater than 2.");
     }
