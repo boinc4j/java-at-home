@@ -1,5 +1,4 @@
 import java.io.*;
-import java.math.BigInteger;
 
 public class MainTask {
 
@@ -13,7 +12,8 @@ public class MainTask {
     }
 
     Long start = Long.valueOf(args[0]);
-    Long end = Long.valueOf(args[1]);
+    Long chunkSize = Long.valueOf(args[1]);
+    Long end = start + chunkSize - 1;
 
     (new MainTask(start.longValue(), end.longValue())).work();
   }
