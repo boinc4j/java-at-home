@@ -5,7 +5,7 @@ public class MainTask {
 
   private static final String DELIM = ",";
 
-  private final File outputFile = new File("addends.txt");
+  public static final File OUTPUT_FILE = new File("addends.txt");
 
   public static void main(String[] args) throws Exception {
     BigInteger ten = BigInteger.valueOf(10l);
@@ -22,8 +22,8 @@ public class MainTask {
   private Long rangeStart, rangeEnd;
 
   public MainTask(Long start, Long end) throws IOException {
-    if (outputFile.exists()) {
-      String line = tail(outputFile);
+    if (OUTPUT_FILE.exists()) {
+      String line = tail(OUTPUT_FILE);
       String[] lineParts = line.split(DELIM);
       this.rangeStart = Long.valueOf(lineParts[0]);
     } else {
@@ -41,11 +41,11 @@ public class MainTask {
   }
 
   public void work(Long input) throws IOException {
-    try (FileWriter fw = new FileWriter(outputFile, true);
+    try (FileWriter fw = new FileWriter(OUTPUT_FILE, true);
          BufferedWriter bw = new BufferedWriter(fw);
          PrintWriter out = new PrintWriter(bw)) {
 
-      GoldbachSums goldbach = new GoldbachSums(input);
+      GoldbachSums goldbach = new GoldbachSums(input, 35);
 
       Long addend = goldbach.iterator().next();
       if (addend != null) {

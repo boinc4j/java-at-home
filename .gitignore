@@ -5,3 +5,5 @@ target
 composer.json
 .env
 primes.dat
+addends.txt
+test.txt

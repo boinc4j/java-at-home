@@ -11,11 +11,13 @@ public class GoldbachSums implements Iterable<Long> {
 
   private final Long rangeEnd;
 
-  public GoldbachSums(Long sum) throws IOException {
-    this(sum, 0l, sum);
+  private Integer certainty;
+
+  public GoldbachSums(Long sum, Integer certainty) throws IOException {
+    this(sum, 0l, sum, certainty);
   }
 
-  public GoldbachSums(Long sum, Long rangeStart, Long rangeEnd) throws IOException {
+  public GoldbachSums(Long sum, Long rangeStart, Long rangeEnd, Integer certainty) throws IOException {
     if (sum <= 2) {
       throw new IllegalArgumentException("Number must be greater than 2.");
     }
@@ -25,6 +27,7 @@ public class GoldbachSums implements Iterable<Long> {
     this.sum = sum;
     this.rangeStart = rangeStart;
     this.rangeEnd = rangeEnd;
+    this.certainty = certainty;
   }
 
   @Override
@@ -38,8 +41,8 @@ public class GoldbachSums implements Iterable<Long> {
 
       private Long computeNext(Long n) {
         for (long i = n; i >= lowerLimit; i -= 2) {
-          if (BigInteger.valueOf(i).isProbablePrime(1) &&
-              BigInteger.valueOf(sum - i).isProbablePrime(1)) {
+          if (BigInteger.valueOf(i).isProbablePrime(certainty) &&
+              BigInteger.valueOf(sum - i).isProbablePrime(certainty)) {
             return sum - i;
           }
         }
