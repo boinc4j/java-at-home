@@ -8,13 +8,12 @@ public class MainTask {
   public static final File OUTPUT_FILE = new File("addends.txt");
 
   public static void main(String[] args) throws Exception {
-    BigInteger ten = BigInteger.valueOf(10l);
-    BigInteger four = BigInteger.valueOf(4l);
-    BigInteger five = BigInteger.valueOf(5l);
-    BigInteger base = ten.pow(18);
+    if (args.length != 2) {
+      throw new IllegalArgumentException("Must provide 2 arguments (start, end)");
+    }
 
-    BigInteger start = base.multiply(four);
-    BigInteger end = base.multiply(five);
+    Long start = Long.valueOf(args[0]);
+    Long end = Long.valueOf(args[1]);
 
     (new MainTask(start.longValue(), end.longValue())).work();
   }
