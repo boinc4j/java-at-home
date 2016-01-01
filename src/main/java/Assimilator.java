@@ -19,9 +19,11 @@ public class Assimilator {
       String line;
       while ((line = br.readLine()) != null) {
         String[] parts = line.split(MainTask.DELIM);
-        Long sum = Long.valueOf(parts[0]);
-        Long addend = Long.valueOf(parts[1]);
-        results.put(sum, addend);
+        if (parts.length == 2) {
+          Long sum = Long.valueOf(parts[0]);
+          Long addend = Long.valueOf(parts[1]);
+          results.put(sum, addend);
+        }
       }
     }
 
