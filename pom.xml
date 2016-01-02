@@ -70,9 +70,10 @@
       <plugin>
         <groupId>com.github.jkutner</groupId>
         <artifactId>boinc-maven-plugin</artifactId>
-        <version>0.1.13</version>
+        <version>0.1.14</version>
         <configuration>
           <uberjar>${project.build.directory}/${project.build.finalName}-jar-with-dependencies.jar</uberjar>
+          <assimilatorClass>Assimilator</assimilatorClass>
         </configuration>
         <executions>
           <execution>

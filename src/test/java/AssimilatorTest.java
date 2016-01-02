@@ -11,7 +11,7 @@ public class AssimilatorTest {
     try {
       cleanDb(jdbcUrl);
 
-      System.setProperty("jdbc.database.url", jdbcUrl);
+      System.setProperty("boinc.jdbc.database.url", jdbcUrl);
       Assimilator a = new Assimilator();
 
       List<File> files = new ArrayList<>();
@@ -38,7 +38,7 @@ public class AssimilatorTest {
     try {
       cleanDb(jdbcUrl);
 
-      System.setProperty("jdbc.database.url", jdbcUrl);
+      System.setProperty("boinc.jdbc.database.url", jdbcUrl);
       Assimilator a = new Assimilator();
 
       List<File> files = new ArrayList<>();

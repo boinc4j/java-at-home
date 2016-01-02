@@ -32,9 +32,7 @@ public class Assimilator {
       updateTemplate += ",(?,?)";
     }
 
-    try (Connection connection =
-             DriverManager.getConnection(
-                 System.getProperty("jdbc.database.url", System.getenv("JDBC_DATABASE_URL")))) {
+    try (Connection connection = getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate(CREATE);
 
@@ -49,18 +47,24 @@ public class Assimilator {
   }
 
   public void assimilateError(String errorCode, String workUnitId) throws Exception {
-    // todo
-    try (Connection connection =
-             DriverManager.getConnection(System.getenv("JDBC_DATABASE_URL"))) {
+    try (Connection connection = getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (TIMESTAMP('2000-01-01 00:00:00','00:00:00'))");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-      while (rs.next()) {
-        System.out.println( "Read from DB: " + rs.getTimestamp("tick"));
-      }
+      stmt.executeUpdate(
+          "CREATE TABLE IF NOT EXISTS " +
+              "goldbach_errors (code VARCHAR(1028), work_unit_id code VARCHAR(1028), time timestamp)");
+      PreparedStatement updateStmt = connection.prepareStatement(
+          "INSERT INTO code, work_unit_id, time VALUES (?,?,now())");
+      updateStmt.setString(1, errorCode);
+      updateStmt.setString(2, workUnitId);
     }
+  }
+
+  public Connection getConnection() throws SQLException {
+    return DriverManager.getConnection(getJdbcUrl());
+  }
+
+  public String getJdbcUrl() {
+    return System.getProperty("boinc.jdbc.database.url", System.getenv("JDBC_DATABASE_URL"));
   }
 
   public static void main(String[] args) throws Exception {
