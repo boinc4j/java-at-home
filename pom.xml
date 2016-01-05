@@ -8,6 +8,16 @@
   <artifactId>java-at-home</artifactId>
   <packaging>jar</packaging>
 
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-codefinger-boinc</id>
+      <name>bintray-plugins</name>
+      <url>http://dl.bintray.com/codefinger/boinc</url>
+    </repository>
+  </repositories>
   <pluginRepositories>
     <pluginRepository>
       <snapshots>
