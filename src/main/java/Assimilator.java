@@ -35,8 +35,13 @@ public class Assimilator extends BoincAssimilator {
       PreparedStatement updateStmt = connection.prepareStatement(updateTemplate);
       int i = 1;
       for (Long sum : results.keySet()) {
+        Long addend = results.get(sum);
         updateStmt.setLong(i++, sum);
         updateStmt.setLong(i++, results.get(sum));
+
+        if (addend == 0) {
+          recordMiracle(connection, sum, addend);
+        }
       }
       updateStmt.execute();
     }
@@ -66,5 +71,13 @@ public class Assimilator extends BoincAssimilator {
       }
     }
     return results;
+  }
+
+  private void recordMiracle(Connection connection, Long sum, Long addend) throws SQLException {
+    Statement stmt = connection.createStatement();
+    stmt.executeUpdate("CREATE TABLE IF NOT EXISTS miracle (sum BIGINT, addend BIGINT)");
+    PreparedStatement updateStmt = connection.prepareStatement("INSERT INTO miracle (sum, addend) VALUES (?,?)");
+    updateStmt.setLong(1, sum);
+    updateStmt.setLong(2, addend);
   }
 }

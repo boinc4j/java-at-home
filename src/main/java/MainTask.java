@@ -57,7 +57,7 @@ public class MainTask {
       if (addend != null) {
         out.printf("%d%s%d\n", input, DELIM, addend);
       } else {
-        out.printf("%d%sNULL\n", input, DELIM);
+        out.printf("%d%s0\n", input, DELIM);
       }
       out.flush();
     }
