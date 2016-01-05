@@ -30,7 +30,7 @@
   </pluginRepositories>
 
   <properties>
-    <boinc-plugin.version>0.1.15</boinc-plugin.version>
+    <boinc-plugin.version>0.1.16</boinc-plugin.version>
   </properties>
 
   <dependencies>
