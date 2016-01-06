@@ -16,7 +16,7 @@ public class Assimilator extends BoincAssimilator {
   private static final String CREATE = "CREATE TABLE IF NOT EXISTS goldbach (sum BIGINT, addend BIGINT)";
 
   private static final String CREATE_ERROR = "CREATE TABLE IF NOT EXISTS " +
-      "goldbach_errors (code text, work_unit_id code text, time timestamp)";
+      "goldbach_errors (error_code text, work_unit_id code text, assimilate_time timestamp)";
   private static final String INSERT_ERROR = "INSERT INTO code, work_unit_id, time VALUES (?,?,now())";
 
   public void assimilate(String workUnitId, List<File> files) throws Exception {
