@@ -21,29 +21,34 @@ public class Assimilator extends BoincAssimilator {
 
   public void assimilate(String workUnitId, List<File> files) throws Exception {
     File resultsFile = files.get(0);
-    Map<Long,Long> results = readResults(resultsFile);
+    if (resultsFile.exists()) {
+      Map<Long, Long> results = readResults(resultsFile);
 
-    String updateTemplate = UPDATE;
-    for (int i=1; i < results.size(); i++) {
-      updateTemplate += ",(?,?)";
-    }
-
-    try (Connection connection = getConnection()) {
-      Statement stmt = connection.createStatement();
-      stmt.executeUpdate(CREATE);
-
-      PreparedStatement updateStmt = connection.prepareStatement(updateTemplate);
-      int i = 1;
-      for (Long sum : results.keySet()) {
-        Long addend = results.get(sum);
-        updateStmt.setLong(i++, sum);
-        updateStmt.setLong(i++, results.get(sum));
-
-        if (addend == 0) {
-          recordMiracle(connection, sum, addend);
-        }
+      String updateTemplate = UPDATE;
+      for (int i = 1; i < results.size(); i++) {
+        updateTemplate += ",(?,?)";
       }
-      updateStmt.execute();
+
+      try (Connection connection = getConnection()) {
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(CREATE);
+
+        PreparedStatement updateStmt = connection.prepareStatement(updateTemplate);
+        int i = 1;
+        for (Long sum : results.keySet()) {
+          Long addend = results.get(sum);
+          updateStmt.setLong(i++, sum);
+          updateStmt.setLong(i++, results.get(sum));
+
+          if (addend == 0) {
+            recordMiracle(connection, sum, addend);
+          }
+        }
+        updateStmt.execute();
+      }
+    } else {
+      // this could be the result of a restart, which lost the file.
+      assimilateError("MISSING_FILE", workUnitId);
     }
   }
 
