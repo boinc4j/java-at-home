@@ -2,7 +2,7 @@
     "name": "BONIC Template App",
     "description": "A barebones BOINC app",
     "repository": "https://github.com/jkutner/java-at-home",
-    "addons": ["jawsdb"],
+    "addons": ["jawsdb:kitefin"],
     "env": {
         "HEROKU_APP_NAME": {
             "description": "The name of the Heroku app (must be the same as above)."
