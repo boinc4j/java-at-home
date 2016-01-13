@@ -16,7 +16,7 @@ for JOB in $(seq 0 ${NUM_OF_JOBS}); do
       -wu_template templates/app_in \
       -result_template templates/app_out \
       -command_line "${NEXT_SUM} ${CHUNK_SIZE}" \
-      in.txt
+      in.json
   NEXT_SUM=$((${NEXT_SUM} + ${CHUNK_SIZE}))
 done
 
