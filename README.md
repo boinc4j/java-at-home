@@ -68,10 +68,3 @@ working). You can check the server's status page to see the progress of these jo
 
 TODO: create a status page
 
-## Usage
-
-* Fork this repo
-* Add your custom logic to the `MainTask` class
-* Add your assimilation logic to the `Assimilator` class
-* Click the Heroku button from your repo.
-
