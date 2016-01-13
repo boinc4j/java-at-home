@@ -27,7 +27,7 @@
           "url": "heroku/php"
       },
       {
-          "url": "https://github.com/jkutner/boinc-buildpack"
+          "url": "https://github.com/boinc4j/boinc-buildpack"
       }
     ]
 }
