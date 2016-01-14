@@ -47,14 +47,14 @@ add a new project. When asked for a project URL, use the landing page you viewed
 ### Step 4: Create some work
 
 This sample app tests numbers for the Goldbach conjection (i.e. all even numbers are the sum of two primes).
-We can give the BOINC server a chunk of numbers that we what it to crunch by using the `create_work` script
+We can give the BOINC server a chunk of numbers that we what its clients to crunch by using the `create_work` script
 included in this repo. It expects the following arguments:
 
 ```
-create_work <START_SUM> <CHUNK_SIZE> <NUM_OF_JOBS>
+create_work <FIRST_NUMBER> <RANGE_PER_CLIENT> <NUM_OF_JOBS>
 ```
 
-Thus, you can ask your clients to check numbers starting with 10, each checking 8 numbers, and create 2 jobs
+Thus, you can ask your clients to check numbers starting with 10, each client checking 8 number, and create 2 jobs
 (thus checking numbers from 10 to 36) by running this command:
 
 ```
