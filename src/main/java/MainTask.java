@@ -7,15 +7,32 @@ public class MainTask {
   public static final File OUTPUT_FILE = new File("addends.txt");
 
   public static void main(String[] args) throws Exception {
-    if (args.length != 2) {
-      throw new IllegalArgumentException("Must provide 2 arguments (start, end)");
+    try {
+      if (args.length < 2) {
+        throw new IllegalArgumentException("Must provide 2 arguments (start, end)");
+      }
+
+      Long start = Long.valueOf(args[0]);
+
+      if (start < 6) {
+        throw new IllegalArgumentException("Start value must be 6 or greater. Found " + start);
+      }
+
+      Long chunkSize = Long.valueOf(args[1]);
+      Long end = start + chunkSize - 1;
+
+      (new MainTask(start.longValue(), end.longValue())).work();
+    } catch (Exception e) {
+      try (FileWriter fw = new FileWriter(OUTPUT_FILE, true);
+           BufferedWriter bw = new BufferedWriter(fw);
+           PrintWriter out = new PrintWriter(bw)) {
+
+        out.printf("ERROR: %s\n%s", e.getMessage());
+        e.printStackTrace(out);
+        out.flush();
+      }
+      Thread.sleep(120000);
     }
-
-    Long start = Long.valueOf(args[0]);
-    Long chunkSize = Long.valueOf(args[1]);
-    Long end = start + chunkSize - 1;
-
-    (new MainTask(start.longValue(), end.longValue())).work();
   }
 
   private Long rangeStart, rangeEnd;
