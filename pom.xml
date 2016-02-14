@@ -30,7 +30,7 @@
   </pluginRepositories>
 
   <properties>
-    <boinc-plugin.version>0.2.8</boinc-plugin.version>
+    <boinc-plugin.version>0.2.9</boinc-plugin.version>
   </properties>
 
   <dependencies>
@@ -47,8 +47,8 @@
     </dependency>
     <dependency>
       <groupId>org.boinc4j</groupId>
-      <artifactId>boinc4j</artifactId>
-      <version>0.3.3</version>
+      <artifactId>boinc-maven-plugin</artifactId>
+      <version>${boinc-plugin.version}</version>
     </dependency>
   </dependencies>
 
